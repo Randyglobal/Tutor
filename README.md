@@ -349,4 +349,233 @@ app.use("/User", route)
         IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953gmail.com)
 
 
-                             Part V (Crearing the home page)
+                             Part V (Crearing the home page and Add User Page)
+        NB: Here is just the creation of interfaces, so you are expected to read carefully and understand how the copy and paste is done because that is what we will be doing in this part.
+  
+  ## Route
+  -- from the previous part, if we go to the browser and put `localhost:5000/User`, we'll see the welcome message, here we will go and remove the `User` from the router path so that as we open `localhost:5000`, we can see our welcome message directly
+
+  ## Re-arranging routes
+
+-- In the router.js, change this line of code => 
+
+###  start
+router.get('/', (req, res,next) => {
+    res.send("Hello, This is My first node.js Tutor")
+})
+
+### end 
+
+-- To this line of code => 
+
+###  start
+router.get('/', (req, res,next) => {
+    res.render("index", {title: "Home Page"})
+})
+
+### end 
+
+ --- we are doing this because we want to start working with the HTML files.
+ This Brings the difference between [res.send] and [res.render]. 
+
+  [res.send]: 
+    We use this when we want to send just the message to the client and is displayed in the browser as the example (res.send("Hello, This is My first node.js Tutor")) states.
+
+  [res.render]:
+  This renders an html view to the clien. This function takes two parameters => 
+  1- A string which will contain the name of the html document you want to render
+  2- An Object whose property can be defined, in this case, I used the Title Property. You can see the example  (res.render("index", {title: "Home Page"}))
+
+  ## View Folder
+  --In the view folder, create a folder called `nav` and in it, create two files named `navbar.ejs` and `footer.ejs`.
+  --Enter the navbar.ejs and put the following code =>
+
+  ###    start
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container">
+          <a class="navbar-brand text-white" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="/add">Add User</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="#">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="#">Contact</a>
+              </li>
+              
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success text-white" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
+
+###   end
+
+ -- Dont be scared this is simply a bootstrap code for the navbar.
+ -- At the top, you will see this (<title><%= title %></title>), The title here is what we defined in the router, we interpullate it here.
+ -- For now, we wont have anything to do with the footer, we will add it at the end.
+
+ --Enter the index.ejs file and do the following : 
+   ** remove everything in the file by doing `ctrl A` then `Backspace` to clear everything,
+   ** Import the navbar content
+    -- You will import this by using the ejs method `<%- include("./nav/navbar") -%>`
+    --NB: What is in the bracket is the path and it differs depending on your work and folder structure. 
+   ** After importing, add this block of code => 
+
+   ### start
+
+   <div class="container">
+    <div class="row my-5">
+
+        <div class="col-lg-12">
+            <div class="table-responsive">
+                <table class="table table-striped text-center">
+     
+                    <thead>
+                        <tr class="table-primary">
+                            <th>ID</th>
+                            <th>IMAGE</th>
+                            <th>NAME</th>
+                            <th>EMAIL</th>
+                            <th>PHONE NUMBER</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>I</td>
+                            <td>
+                                <img src="" alt="" srcset="">
+                            </td>
+                            <td>Imbia Randy</td>
+                            <td>randyitoe2255@gmail.com</td>
+                            <td>654495386</td>
+                            <td>
+                                <a href=""class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                <a href=""class="text-danger" ><i class="fas fa-trash fa-lg mx-1"></i></a>
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+### end
+
+  -- As i earlier said, dont be scared for this is just bootstrap. You can change the interface if you wish too.
+  ** Start your server and open, you should see something like this! CLICK THE IMAGE =>([Alt text](./what-you-see/image.png)). NB: YOU SHOULD BE CONNECTED TO THE INTERNET
+
+  ** If some styles are not reading well, check your connection
+
+  ** You can change the contents of the index.ejs, removing the name, number and put yours.
+
+  ** You will observe that even as the navbar module is in another folder, it still works on the web browser because we imported it or we included it in the index.ejs
+
+
+-- Create a file in the views folder called `add-user.ejs`
+
+  --- in the file, add the following block of code => 
+
+
+###  Start
+
+(include or import the navbar here, reference the what we did in the index.js)
+
+<div class="container">
+    <div class="col-lg-12">
+        <div class="add-user-body w-50 m-auto">
+            <h1 class="text-center"> Add User </h1>
+
+            <form action="/add" method="post" id="add-form" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter Full Names">
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  </div>
+                <div class="mb-3">
+                  <label for="number" class="form-label">Phone Number</label>
+                  <input type="text" name="number" class="form-control" id="number" aria-describedby="emailHelp" placeholder="Enter Phone Number">
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Select image</label>
+                    <input class="form-control" name="image" type="file" id="formFile">
+                  </div>
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+              </form>
+        </div>
+         
+    </div>
+</div>
+
+### end
+
+** when this is done and you have included the navbar at the top of the code, we then move to the next thing which is creating the route for the add-user.
+
+## Creating add-user route
+If you enter your nav folder and redirect to the navabar file, you will see that we have this
+`<li class="nav-item">
+  <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
+  </li>`
+
+-- in the (href), we have ("/") because that is how we declared it in the router
+
+-- Enter the router.js file and add the following line of code => 
+ ### start
+
+  router.get('/add', (req, res, next) => {
+    res.render("add-user", {title: "Add-User"})
+  })
+
+### end
+
+--Hence go to your navbar.ejs file and check this line of code => 
+
+<li class="nav-item">
+  <a class="nav-link text-white" href="/add">Add User</a>
+</li>
+
+check if the ("/add") is in the href as the path to open the add-user page.
+Open your browser and refresh your page and if you lick on `Add User`, you should have this CLICK ON THE IMAGE => ![Alt text](./what-you-see/image1.png)
+
+   Ref: For more UI's, use => https://getbootstrap.com/docs/5.3/forms/overview/#overview
+
+!!!!!!!!Congratulations You have created the Two Pages we will use, yeeeeeeee You are the best!!!!!!!!!!!!!
+
+        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953gmail.com)

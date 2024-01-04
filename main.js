@@ -12,11 +12,13 @@ const session = require('express-session')
 // calling the port in the .env
 const PORT  = process.env.PORT || 4000
 
+const DB_CONNECT = process.env.database_URL;
+
 const app = express();
 
 
 // database connect
-mongoose.connect("mongodb://0.0.0.0:27017/Admin_Board", {
+mongoose.connect(DB_CONNECT, {
     // useNewUrlParser: true,
     // useUnifiedTopology: true
 });
@@ -54,7 +56,7 @@ app.set('view engine', 'ejs')
 // Route prefix
 const route = require('./router/router')
 
-app.use("/User", route)
+app.use("/", route)
 
 // listening to our app on http://localhost:5000
 app.listen(PORT, () => {
