@@ -16,7 +16,7 @@ var Storage = multer.diskStorage({
     }
 });
 
-var upload =  multer({
+const upload =  multer({
     storage: Storage,
 }).single("image");
 

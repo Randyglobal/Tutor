@@ -122,7 +122,7 @@ console.log(`Server Running on http://localhost:${PORT}`);
 
 ----HAVE YOU UNDERSTOOD?, WOW YOU JUST CONSTRUCTED YOUR FIRST SERVER RUNNING ON PORT 5000!!!!, BIG CONGRATS.....!!!!!!!!!
 
-      IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953gmail.com)
+      IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953@gmail.com)
 
 
                     PART II (Setting up our Database)
@@ -210,7 +210,7 @@ db.once('open', () => console.log("DB CONNECTED!"));
 - After this, you might want to re start your server and run again using `npm start`, You will see 'Server Running on http://localhost:5000, DB CONNECTED!'
   !!!!!!!CONGRATULATIONS FOR SUCCESSFULLY CONNECTION TO MONGODB !!!!!!!
 
-        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953gmail.com)
+        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953@gmail.com)
 
 
 
@@ -346,7 +346,7 @@ app.use("/User", route)
 
 !!!!!!!!Congratulations for knowing how to create a model and routes, yeeeeeeee You are the best!!!!!!!!!!!!!
 
-        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953gmail.com)
+        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953@gmail.com)
 
 
                              Part V (Crearing the home page and Add User Page)
@@ -496,7 +496,8 @@ router.get('/', (req, res,next) => {
 ### end
 
   -- As i earlier said, dont be scared for this is just bootstrap. You can change the interface if you wish too.
-  ** Start your server and open, you should see something like this! CLICK THE IMAGE =>([Alt text](./what-you-see/image.png)). NB: YOU SHOULD BE CONNECTED TO THE INTERNET
+  ** Start your server and open, you should see something like this!
+   CLICK THE IMAGE =>([Alt text](./what-you-see/image.png)). NB: YOU SHOULD BE CONNECTED TO THE INTERNET
 
   ** If some styles are not reading well, check your connection
 
@@ -578,4 +579,143 @@ Open your browser and refresh your page and if you lick on `Add User`, you shoul
 
 !!!!!!!!Congratulations You have created the Two Pages we will use, yeeeeeeee You are the best!!!!!!!!!!!!!
 
-        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953gmail.com)
+        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953@gmail.com)
+
+
+                               PART VI
+      In this part, we are going to add a user from our form  to the Database
+
+## Check The Form for the following(add-user.ejs)
+
+ [1] - Open the add-user file and check the form property. It should be of Method `Post` ( For file uploads and form submittion, you should use the POST method, as it allows larger amounts of data to be sent. So, set the method attribute to "POST".) and action should be the path from which you are working and in my case it is ` "/add" `. the action has the ` "/add" ` route because it is from this page where all the actions will be performed.
+
+ -- enctype: This attribute specifies the content type used to submit the form data. For file uploads, you need to set the enctype attribute to "multipart/form-data". This encoding type is necessary for browsers to properly handle file uploads. 
+
+ -- If you open your add-user.ejs, you will see this attached to the form tag => `enctype="multipart/form-data" `
+                    
+ [2] - Make sure that all your inputs have the name property assigned to the e.g `<input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter Full Names">`.
+ [3] - Make sure your button has the ` type="submit" `
+
+ ## Writing the logic in the Router.js
+
+ [1] - Ope your file router.js, import the user.js in the model and the multer(Used for uploading images). This is what you should have => 
+  
+  ### start
+
+  const model = require("../model/user");
+
+  const multer = require("multer")
+
+  ### end
+
+  -- we are importing the model because we are going to use it to work with the form so as to send all the information in the database.
+  -- The multer is used for the images, to upload images. File uploading is a common requirement in web development projects. But handling file uploads in Node.js can be complex and time-consuming. That's where Multer comes in.
+
+ [2] - After Importing the model and the multer, copy and paste the following code => 
+
+ ### start
+
+ // image upload
+var Storage = multer.diskStorage({
+    destination: function(req, file, cb){
+    cb(null, './public/uploads/');
+    },
+    filename: function(req, file, cd) {
+        cd(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+    }
+});
+
+const upload =  multer({
+    storage: Storage,
+}).single("image");
+
+### end
+  
+ -- This logic is for the image to be uploaded:
+ -- Multer is a middleware for handling multipart/form-data requests, specifically     designed for file uploads in Node.js.
+
+ -- This block of code starts with a variable  `Storage` which carries the middleware `multer`. the multer has a property called `diskStorage` which returns a configured storage engine to store files on the local file system. in this function we have the `destination` which is a string or function that determines the destination path of the uploaded files. in this case: 
+  --  I created a folder called public and inside i created another folder called uploads which you have to do.
+  the destination takes 3 paramethers, `req, file, and callback` and i used the callback to define my destination, that is: `cb(null, './public/uploads/');` as you can see, i want the images to be uploaded and stored in the uploads folder found in the public folder.
+  After we have another function called `filename`, a function that determines the name of the file uploaded and just like the destination, it takes 3 functions.
+  and it is still with the callback function i used to define the file name. =>
+  `cd(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);`
+
+
+  -- After setting up the Storage configuration, you create an instance of Multer by calling multer({ storage }), passing in the Storage configuration object. This creates the Multer middleware that you can use in your Express application to handle file uploads. you can see in the code below => 
+
+  ### start
+
+  const upload =  multer({
+    storage: Storage,
+}).single("image");
+
+### end
+
+For more referencing, You can read the documentation => https://www.freecodecamp.org/news/simplify-your-file-upload-process-in-express-js/
+
+[3] - After the logic to upload an image, copy the block of code below and paste => 
+
+### start
+router.post('/add', upload, (req, res) => {
+    const body = req.body;
+    console.log(req.file);
+    const admin = new model({
+        name: body.name,
+        email: body.email,
+        phone: body.number,
+        image: req.file.path,
+    });
+
+    admin.save().then(result => {
+
+        console.log(result);
+        req.session.message = {
+            type: 'Success',
+            message: 'User Added Successfully'
+        };
+        res.redirect('/')
+    }).catch(err => {
+        res.json({message: err.message, type: "Something went wrong"})
+    });
+})
+
+### end
+
+-- From the above block of code, we are trying to create a route using the method `POST` still using the path `/add ` since it is in this path we want to perform the action of post and we pass in the variable ` upload `
+
+-- Inside this route, we use req.body this allows us to retrieve data sent in the request body. Since we are submitting a form with data, we get the data with req.body.
+
+-- After assigning the req.body to a variable called body, we create a new model and inside it, we call the properties or the various input names and assign to them the variable used to define req.body followed by the name property of the input fields, for example => `name: body.name`.
+
+-- After creating a new model, we save the model and then check if the action has been successful or not with the next line of code. This block of code for example 
+
+    req.session.message = {
+            type: 'Success',
+            message: 'User Added Successfully'
+        };
+
+ -- Will work only if you have the middleware for express-session written in your root file. if you go to the root file, (main.js), you will see this line of code
+
+ app.use(
+    session({
+        secret: "My secret key",
+        saveUninitialized: true,
+        resave: false
+    })
+)
+
+-- which is the middleware for express-session and helps in the form validation by throwing an error message or a successful message. If successful, it redirects us to the home page.
+
+-- Now re-start your server and open `http://localhost:5000`
+
+-- click on the Add User on the nav bar, then try to submit the form, Normally you should have no error.
+
+-- After submitting the form, check your `uploads folder to check the image` in VS CODE and to confirm if all the data has been stored in your data base, open MONGODB COMPASS in your computer and find your database, REFRESH THE DATABASE TO SEE ALL YOUR DATA YOU ENTERED THROUGH THE FORM. This is what i have => 
+![Alt text](image2.png)
+
+
+!!!!!!!!Congratulations You have submitted data to your database and saved an image into your database as well............., yeeeeeeee You are the best!!!!!!!!!!!!!
+
+        IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953@gmail.com)
+
