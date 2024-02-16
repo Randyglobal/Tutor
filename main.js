@@ -5,9 +5,13 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 
+mongoose.set('strictQuery', false);
+
 // const client = require('mongodb').MongoClient
 
 const session = require('express-session')
+
+
 
 // calling the port in the .env
 const PORT  = process.env.PORT || 4000
@@ -31,6 +35,9 @@ db.once('open', () => console.log("DB CONNECTED!"));
 
 // End
 
+
+
+
 // setting middle wares
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
@@ -48,6 +55,9 @@ app.use((req, res, next) => {
     delete req.session.message;
     next();
 });
+
+// const uploads = require('./public/uploads')
+// app.use(express.static("uploads"))
 
 
 // setting template engine

@@ -719,3 +719,8 @@ router.post('/add', upload, (req, res) => {
 
         IF YOU HAVE ANY WORRIES, CONTACT US VIA  MAIL WITH (globalprojects953@gmail.com)
 
+
+
+PB
+The Folder for images is not static
+the req.body in the updates is giving me an empty object
